@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "message": "成功",
+  "data": [
+    {
+      "id": "clFy6yCcSUuri02AYu/O29aKoSc=",
+      "jingzhong": "267.24",
+      "name": "无烟沫煤",
+      "supplierName": "天津鑫东林矿产贸易有限公司",
+      "zjbgdate": "2017-1-2 8:54:46. 0",
+      "other": {
+        "水分含量": "12.40",
+        "Ad": "10.94",
+        "Vdaf": "11.89",
+        "S": "0.36",
+        "发热量（干燥基高位）kcal/kg": "7703"
+      },
+      "jjd": [
+        {
+          "id": "clFy6yCcSUuri02AYu/O29aKoSc=",
+          "zjbgnum": "BR201701010040",
+          "name": "无烟沫煤",
+          "maozhong": "48280",
+          "pizhong": "14920",
+          "kczzl": "中联仓储中心",
+          "jingzhong": "33360",
+          "kouza": "0",
+          "quanganzhong": "29.22336",
+          "water": "12.4",
+          "type": "采购收货检斤",
+          "num": "N110201612310027",
+          "supplierName": "天津鑫东林矿产贸易有限公司"
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,11 @@
   import axios from 'axios'
   export default {
     name: "materielSearch",
+    props:{
+      url:{
+        type:String
+      }
+    },
     data(){
       return {
         timer:null,
@@ -42,7 +47,7 @@
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           if (e.target.value !== '') {
-            axios.get('http://doclever.cn:8090/mock/5c62e01a3dce46264b25bf54/getSupplier', {
+            axios.get(this.url, {
               params: {
                 keyword: e.target.value
               }
@@ -58,7 +63,7 @@
             this.showResult = false
             this.searchResult = []
             this.selectedResult = ''
-            this.$emit('listenToChildEvent','')
+            this.$emit('update:selected','')
           }
         }, 300)
         //this.selectedResult = e != null ? e.target.value : keyword
@@ -71,7 +76,7 @@
       },
       resultToSearchBar(e,id) {
         this.selectedResult = e.target.textContent
-        this.$emit('listenToChildEvent',id)
+        this.$emit('update:selected',id)
         this.hiddenSearch()
         this.searchResult = []
       },
@@ -79,7 +84,7 @@
         this.showResult = false;
       },
       clearSearchResult(){
-        this.$emit('listenToChildEvent','')
+        this.$emit('update:selected','')
         this.selectedResult = ''
       }
     }

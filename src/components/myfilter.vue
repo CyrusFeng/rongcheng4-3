@@ -5,6 +5,7 @@
         <span class="top-filter-btn-name">筛选</span>
         <i :class="showFilter?'triangle-up':'triangle-down'"></i>
       </div>
+      <TopSearch></TopSearch>
     </header>
     <div class="filter-panel" v-show="showFilter" ref="filterPanel">
       <div class="filter-wrap" @click.stop ref="filterWrap" @click="changeShowFilter" v-if="filterData.length > 0">
@@ -31,12 +32,12 @@
 
         </div>
         <div class="btns" @click.stop>
-          <a class="reset" @click="">重置</a>
+          <a class="reset" @click="resetChoose">重置</a>
           <a class="sure" @click="changeShowFilter">确定</a>
         </div>
       </div>
     </div>
-    <div class="showSecondClassification" style="height:calc(100% - 0.45rem)">
+    <div class="showSecondClassification">
       <ul>
         <li v-for="item in chosenSpan">
           <router-link :to="{name: 'list', params: {id: item.id}}">{{item.name}}</router-link>
@@ -49,9 +50,13 @@
 <script>
   import axios from 'axios'
   import store from '../vuex'
+  import TopSearch from './TopSearch'
 
   export default {
     name: "myfilter",
+    components:{
+      TopSearch
+    },
     data() {
       return {
         showFilter: false,
@@ -80,10 +85,13 @@
             //获取每个二级分类项的高度并保存
             this.height = this.$refs.span[0].getBoundingClientRect().height
             //将每个一级分类的高度设置为二级分类项的高度值，并且隐藏超出部分
-            this.$refs.options.forEach((item)=>{
-              item.style.height = this.height + 'px'
-              item.style.overflow = 'hidden';
-            })
+            if(this.$refs.options){
+              this.$refs.options.forEach((item)=>{
+                item.style.height = this.height + 'px'
+                item.style.overflow = 'hidden';
+              })
+            }
+
             console.log(this.filterData)
           })
 
@@ -127,9 +135,7 @@
           item.active = true
           this.chosenSpan.push(item)
         }
-        this.chosenSpan.forEach((item)=>{
-          // console.log(item)
-        })
+
 
         // if (item.active) {
         //   Vue.set(item, 'active', false);//为item添加不存在的属性，需要使用vue提供的Vue.set( object, key, value )方法。
@@ -149,6 +155,13 @@
       //   store.commit("getChosenSpan", this.chosenSpan);
       //   this.showFilter = false
       // }
+      resetChoose(){
+        console.log('xxx')
+        this.chosenSpan.forEach((item)=>{
+          item.active = false
+        })
+        this.chosenSpan.length = 0
+      }
     },
     created() {
       axios.get('http://doclever.cn:8090/mock/5c62e01a3dce46264b25bf54/getScreen').then((response) => {
@@ -156,9 +169,21 @@
           this.filterData = response.data.data
           this.filterData.forEach((item) => {
             this.$set(item, 'expand', false);
-            item.classification.forEach((x) => {
-              this.$set(x, 'active', false);
-            })
+            if(item.classification){
+              item.classification.forEach((x) => {
+                this.$set(x, 'active', false);
+              })
+            }
+
+            if(item.name === '原燃辅料'){
+              if(item.classification){
+                item.classification.forEach((x) => {
+                  x.active = true
+                  this.chosenSpan.push(x)
+                })
+              }
+
+            }
           })
         }
 
@@ -166,9 +191,20 @@
         .catch((error) => {
           // this.showLoadingImg = false
         })
+      // this.filterData = [{"id":"1","name":"原燃辅料","classification":[{"id":"101","name":"铁矿"},{"id":"102","name":"焦炭"},{"id":"103","name":"煤"},{"id":"104","name":"废钢"},{"id":"106","name":"合金"},{"id":"107","name":"耐材"},{"id":"108","name":"非金属矿"},{"id":"111","name":"辅料"},{"id":"112","name":"废旧物资"}]},{"id":"3","name":"备件","classification":[{"id":"301","name":"螺栓类"},{"id":"302","name":"胶管、软连接类"},{"id":"303","name":"传动备件类"},{"id":"304","name":"杂品类"},{"id":"305","name":"密封类"},{"id":"306","name":"工具类"},{"id":"307","name":"劳保类"},{"id":"308","name":"阀门类"},{"id":"309","name":"管件类"},{"id":"310","name":"轴承类"},{"id":"311","name":"空压机类"},{"id":"312","name":"风机类"},{"id":"313","name":"泵件类"},{"id":"314","name":"气体厂非标件类"},{"id":"315","name":"减速机类"},{"id":"316","name":"输送备件类"},{"id":"317","name":"成套设备"},{"id":"318","name":"液压、润滑类"},{"id":"319","name":"除尘备件类"},{"id":"320","name":"有色金属备件类"},{"id":"321","name":"轧钢厂非标件类"},{"id":"322","name":"炼钢厂非标件类"},{"id":"323","name":"炼铁厂非标件类"},{"id":"324","name":"化验器材、化验药品类"},{"id":"325","name":"火车及配件类"},{"id":"326","name":"钢材类"},{"id":"327","name":"油品、油漆类"},{"id":"328","name":"起重备件类"},{"id":"329","name":"锅炉类"},{"id":"330","name":"办公类"},{"id":"331","name":"电脑耗材类"},{"id":"351","name":"电气类"},{"id":"352","name":"线缆类"},{"id":"353","name":"电机及其配件"},{"id":"354","name":"工控自动化仪表类"},{"id":"355","name":"PLC/DCS"},{"id":"356","name":"二级库"},{"id":"399","name":" 其他"}]},{"id":"5","name":"钢铁废次材/副产品","classification":[{"id":"51","name":"副产品"}]},{"id":"8","name":"钢铁产成品/在制品","classification":[{"id":"81","name":"钢坯"},{"id":"82","name":"高线"},{"id":"83","name":"棒材"},{"id":"84","name":"带钢"},{"id":"85","name":"自制半成品"},{"id":"86","name":"铬合金方钢"}]},{"id":"9","name":"能源介质"},{"id":"A","name":"多元","classification":[{"id":"A001","name":"大米"},{"id":"A002","name":"杂粮"},{"id":"A003","name":"水稻"},{"id":"A004","name":"高粱"},{"id":"A005","name":"碎米"},{"id":"A006","name":"玉米糁"},{"id":"A007","name":"小麦"},{"id":"A008","name":"豌豆"},{"id":"A009","name":"白酒"},{"id":"A010","name":"酒精"},{"id":"A011","name":"包装物"},{"id":"A012","name":"酿酒主原料"},{"id":"A013","name":"燃料"},{"id":"A014","name":"放心购"},{"id":"A015","name":"原木"},{"id":"A016","name":"板材"},{"id":"A017","name":"板皮"},{"id":"A018","name":"指接板"},{"id":"A019","name":"低值易耗品"},{"id":"A020","name":"主原料"},{"id":"A021","name":"药品"},{"id":"A022","name":"大麦"},{"id":"A023","name":"内部供应"}]},{"id":"C","name":"藏品"},{"id":"C藏品","name":"藏"},{"id":"L","name":"礼品","classification":[{"id":"L01","name":"酒类"},{"id":"L02","name":"围巾"},{"id":"L03","name":"茶类"},{"id":"L04","name":"经书类"},{"id":"L05","name":"瓷器类"},{"id":"L06","name":"邮册类"},{"id":"L07","name":"食品类"},{"id":"L08","name":"其他"}]},{"id":"x001","name":"用品"}]
+      // this.filterData.forEach((item) => {
+      //     this.$set(item, 'expand', false);
+      //     if(item.classification){
+      //       item.classification.forEach((x) => {
+      //         this.$set(x, 'active', false);
+      //       })
+      //     }
+      //
+      // })
 
 
-    }
+    },
+
   }
 </script>
 
@@ -432,7 +468,9 @@
     color: #fff;
   }
   .showSecondClassification{
-    height: calc(100% - 0.45rem);
+    height: calc(100% - 0.6rem);
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
   }
   .showSecondClassification ul li{
     margin: 0 auto;

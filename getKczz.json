@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "message": "成功",
+  "data": [
+    {
+      "kczzName": "金属仓储中心",
+      "kczzId": "Kx0AAAAAWl/M567U"
+    },
+    {
+      "kczzName": "矿产仓储中心",
+      "kczzId": "Kx0AAAAAWmHM567U"
+    },
+    {
+      "kczzName": "球团作业区",
+      "kczzId": "Kx0AAAAAWu3M567U"
+    },
+    {
+      "kczzName": "炼铁厂",
+      "kczzId": "Kx0AAAAAWm3M567U"
+    },
+    {
+      "kczzName": "炼铁厂",
+      "kczzId": "Kx0AAAAAXU3M567U"
+    },
+    {
+      "kczzName": "炼钢厂",
+      "kczzId": "Kx0AAAAAW0DM567U"
+    },
+    {
+      "kczzName": "炼钢厂",
+      "kczzId": "Kx0AAAAAXT7M567U"
+    },
+    {
+      "kczzName": "带钢车间",
+      "kczzId": "Kx0AAAAAW8rM567U"
+    },
+    {
+      "kczzName": "天荣共享仓储中心",
+      "kczzId": "Kx0AAAAAWmPM567U"
+    },
+    {
+      "kczzName": "唐荣仓储中心",
+      "kczzId": "Kx0AAAAAXT3M567U"
+    },
+    {
+      "kczzName": "动力厂",
+      "kczzId": "Kx0AAAAAXKjM567U"
+    },
+    {
+      "kczzName": "制氧运行车间",
+      "kczzId": "Kx0AAAAAXKDM567U"
+    },
+    {
+      "kczzName": "中联仓储中心",
+      "kczzId": "Kx0AAAAAXTrM567U"
+    }
+  ]
+}

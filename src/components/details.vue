@@ -4,12 +4,12 @@
       <span>{{dataObj.startdate}}至{{dataObj.enddate}}</span>
     </div>
     <div class="statistics">
-      <div class="left">总净重{{dataObj.totalweight}}</div>
+      <div class="left">总净重{{totalWeight}}</div>
       <div class="line"></div>
-      <div class="">总车辆{{dataObj.totalcarnum}}</div>
+      <div class="">总车辆{{totalCar}}</div>
     </div>
     <div class="panel-wrap">
-      <div class="panel" v-for="item in dataObj.list">
+      <div class="panel" v-for="item in dataObj">
         <div class="name">{{item.name}}</div>
         <div class="items">
           <div class="item">
@@ -18,33 +18,21 @@
           </div>
           <div class="item">
             <span class="left">车辆</span>
-            <span class="right">{{item.carnum}}</span>
+            <span class="right">{{item.jjd !== undefined && item.jjd !== null ? item.jjd.length : ''}}</span>
           </div>
           <div class="item">
             <span class="left">供应商</span>
-            <span class="right">{{item.supplier}}</span>
+            <span class="right">{{item.supplierName}}</span>
           </div>
           <div class="item">
-            <span class="left">库存组织</span>
-            <span class="right">{{item.kczz}}</span>
+            <span class="left">运输方式</span>
+            <span class="right">{{item.jjd[0].transport}}</span>
           </div>
         </div>
         <div class="other" v-if="item.other">
-          <div class="block">
-            <span>Vdaf</span>
-            <span>{{item.other.Vdaf}}</span>
-          </div>
-          <div class="block">
-            <span>M10</span>
-            <span>{{item.other.M10}}</span>
-          </div>
-          <div class="block">
-            <span>CSR</span>
-            <span>{{item.other.CSR}}</span>
-          </div>
-          <div class="block">
-            <span>water</span>
-            <span>{{item.other.water}}</span>
+          <div class="block" v-for="(item1,key,index) in item.other">
+            <span>{{key}}</span>
+            <span>{{item1}}</span>
           </div>
         </div>
       </div>
@@ -62,12 +50,14 @@
     data() {
       return {
         dataObj: {},
+        totalWeight:0,
+        totalCar:0,
       }
     },
     beforeRouteEnter(to, from, next) {
       next((vm) => {
         console.log('beforeRouteEnter')
-        axios.get('http://doclever.cn:8090/mock/5c62e01a3dce46264b25bf54/getDetails', {
+        axios.get('http://doclever.cn:8090/mock/5c62e01a3dce46264b25bf54/getDetailsMock', {
           params: {
             ids: vm.$route.params.ids,
           }
@@ -75,6 +65,11 @@
           .then((response) => {
             // vm.dataObj = response.data.data[0];
             vm.dataObj = response.data.data;
+            vm.dataObj.forEach((item)=>{
+              console.log(item)
+              vm.totalWeight+=parseInt(item.jingzhong)
+              vm.totalCar+=item.jjd.length
+            })
             console.log(vm.dataObj)
           })
           .catch(function (error) {
@@ -181,5 +176,6 @@
     padding-top: 0.12rem;
     font-size: 0.12rem;
     color: #030303;
+    text-align: center;
   }
 </style>
